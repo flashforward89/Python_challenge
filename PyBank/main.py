@@ -21,9 +21,9 @@ with open(budgetcsv) as csvfile:
     totalprofit = 0
     monthlychange = []
     date = []
-    initialprofit = 0
-    totalchangeinprofits=0  
-
+    monthlychangeprofits =0
+    #Add a bolean  to correct for the missing numbers when finding the difference for the change in profit
+    First = True 
     # #The net total amount of "Profit/Losses" over the entire period
 
     # #Calculate the changes in "Profit/Losses" over the entire period, then find the average of those changes
@@ -39,38 +39,50 @@ with open(budgetcsv) as csvfile:
         date.append(row[0])
 
         # Calucalting total profits
-        profit.append(row[1])
+        profit.append(int(row[1]))
+        #Monthy change
+        
         totalprofit = totalprofit + int(row[1])
 
         #Calculate the average change in profits from month to month. Then calulate the average change in profits
         finalprofit = int(row[1])
-        monthlychangeprofits = finalprofit - initialprofit
-
-        #Creating a list for monthly changes
-        monthlychange.append(monthlychangeprofits)
-
-        totalchangeinprofits = totalchangeinprofits + monthlychangeprofits
-        initialprofit = finalprofit
+        if not First == True:
+            monthlychangeprofits = (profit[-1] - profit[-2])
+            monthlychange.append(monthlychangeprofits)
+        else:
+            First = False
+        
 
         #Average change in profits
-        averagechangeprofits = (totalchangeinprofits/count)
-        
+    averagechangeprofits = sum(monthlychange)/len(monthlychange)
+
         #Find the change in profits minimum and maximum
-        greatestincreaseprofits = max(monthlychange)
-        greatestdecreaseprofits = min(monthlychange)
+    greatestincreaseprofits = max(monthlychange)
+    greatestdecreaseprofits = min(monthlychange)
 
-        increasedate = date[monthlychange.index(greatestincreaseprofits)]
-        decreasedate = date[monthlychange.index(greatestdecreaseprofits)]
+    increasedate = date[monthlychange.index(greatestincreaseprofits)]
+    decreasedate = date[monthlychange.index(greatestdecreaseprofits)]
         
         
-    print("PyBank")
-    
-
-    
+    print("PyBank Homework")
+    print("Financial Analysis")
+    print("Total Months: " + str(count))
+    print("Total Profits: " + "$" + str(totalprofit))
+    print("Average Change: " + "$" + str(int(averagechangeprofits)))
+    print("Greatest Increase in Profits: " + str(increasedate) + " ($" + str(greatestincreaseprofits) + ")")
+    print("Greatest Decrease in Profits: " + str(decreasedate) + " ($" + str(greatestdecreaseprofits)+ ")")
+ 
 
 with open('PyBank.txt', 'w') as text:
     
-    text.write("PyBank"+ "\n")
+    text.write("PyBank Homework"+ "\n")
+    text.write("Financial Analysis"+ "\n")
+    text.write("Total Months: " + str(count) + "\n")
+    text.write("Total Profits: " + "$" + str(totalprofit) +"\n")
+    text.write("Average Change: " + '$' + str(int(averagechangeprofits)) + "\n")
+    text.write("Greatest Increase in Profits: " + str(increasedate) + " ($" + str(greatestincreaseprofits) + ")\n")
+    text.write("Greatest Decrease in Profits: " + str(decreasedate) + " ($" + str(greatestdecreaseprofits) + ")\n")
+    
     
 
     
